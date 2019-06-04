@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<title>请求有误</title>
+</head>
+<body>
+	<h3>错误提示:</h3>
+	<h4 th:text="${errorMessage}"></h4>
+	<span><a th:href="@{/manager}">返回首页</a></span>
+	<hr />
+	<p th:text="${errorInfo}"></p>
+</body>
+</html>

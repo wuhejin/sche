@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<title>请求有误</title>
+</head>
+<body>
+	<h3>错误提示404</h3>
+	<span th:text="${errorInfo}"></span>
+	<hr/>
+	<span th:text="${errorMessage}"></span>
+</body>
+</html>

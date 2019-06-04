@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tuandai.devops.performance.dao.task.BranchBuildLogDao">
+
+
+    <select id="getBuildingList" resultType="com.tuandai.devops.performance.result.BuildingResult">
+        SELECT A.id as buildId, B.name as branchName, A.test_scene as scene, A.commit_timestamp as timeStamp, A.jenkins_status as status
+        FROM branch_build_log A
+        INNER JOIN  branch B
+        on A.branch_id = B.id
+        WHERE (jenkins_status=1 or jenkins_status=2)
+        AND A.project_id = #{projectId}
+        order by timeStamp DESC
+        LIMIT ${(page-1) * pageSize},${pageSize};
+    </select>
+
+    <select id="getSuccessList" resultType="com.tuandai.devops.performance.result.SuccessBuildResult">
+        SELECT A.id as buildId, B.name as branchName, A.test_scene as scene, A.commit_timestamp as timeStamp
+        FROM branch_build_log A
+        INNER JOIN  branch B
+        on A.branch_id = B.id
+        WHERE status=0
+        AND A.project_id = #{projectId}
+        order by timeStamp DESC
+        LIMIT ${(page-1) * pageSize},${pageSize};
+    </select>
+
+    <select id="getFailureList" resultType="com.tuandai.devops.performance.result.FailureBuildResult">
+        SELECT A.id as buildId, B.name as branchName, A.test_scene as scene,A.jenkins_status,
+        A.data_upload_status, A.report_status,
+         A.commit_timestamp as timeStamp
+        FROM branch_build_log A
+        INNER JOIN  branch B
+        on A.branch_id = B.id
+        WHERE  (A.jenkins_status=3 or A.jenkins_status=4 or (A.jenkins_status=0 and A.status !=0))
+        AND A.project_id = #{projectId}
+        order by timeStamp DESC
+        LIMIT ${(page-1) * pageSize},${pageSize};
+    </select>
+
+    <select id="getProjectBuildInfo" resultType="com.tuandai.devops.performance.dto.task.ProjectBuildInfo">
+        select A.project_id, A.test_scene, A.jenkins_id,
+        B.jenkins_addr, B.timer_task_name, B.submit_task_name, B.branch_task_name
+        from branch_build_log A
+        INNER JOIN project B
+        on A.project_id=B.id
+        where A.id=#{buildId};
+    </select>
+
+    <select id="getProjectJenkinsStatus" resultType="java.lang.Integer">
+        select jenkins_status
+        from branch_build_log
+        where id=#{buildId}
+    </select>
+
+    <select id="getPlatformType" resultType="java.lang.Integer">
+        select P.platform_type
+        from branch_build_log A
+        INNER JOIN project P
+        on A.project_id=P.id
+        where A.id=#{buildId}
+    </select>
+
+    <update id="updateProjectStatus" >
+        update branch_build_log
+        <set>
+            <if test="jenkinsId != null">jenkins_id=#{jenkinsId},</if>
+            <if test="jenkinsStatus != null">jenkins_status=#{jenkinsStatus},</if>
+            <if test="status != null">status=#{status},</if>
+            <if test="reportStatus != null">report_status=#{reportStatus},</if>
+            <if test="appUploadStatus != null">app_upload_status=#{appUploadStatus},</if>
+            <if test="dataUploadStatus != null">data_upload_status=#{dataUploadStatus},</if>
+        </set>
+        where id=#{id}
+    </update>
+
+
+</mapper>

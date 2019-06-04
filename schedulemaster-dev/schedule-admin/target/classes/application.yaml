@@ -1,0 +1,72 @@
+spring:
+  application:
+     name: schedule-master
+
+  resources:
+    static-locations: classpath:/static/, classpath:/templates/
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    check-template-location: true
+    suffix: .html
+    encoding: UTF-8
+    mode: HTML
+
+  profiles:
+    active: dev
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    initialSize: 1
+    minIdle: 1
+    maxActive: 10
+    maxWait: 10000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 1
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+
+    filters: stat,wall,log4j
+
+
+
+server:
+  port: 8088
+  tomcat:
+    accesslog:
+      enabled: true
+      directory: tomcatlog/tomcat_log
+
+##mapper
+mybatis-plus:
+  mapper-locations: 'classpath:mapper/**/*.xml'
+  #实体扫描，多个package用逗号或者分号分隔
+  global-config:
+    #字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
+    field-strategy: 0
+    #驼峰下划线转换
+    db-column-underline: true
+    #刷新mapper 调试神器
+    refresh-mapper: true
+    sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl
+
+
+management:
+   port: 9001
+   security:
+     enabled: false
+
+
+
+
+

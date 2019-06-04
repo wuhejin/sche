@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<!--极速模式-->
+	<meta name="renderer" content="webkit">
+	<title>高铁检修管理系统</title>
+	<!--layui-v2.3.0-->
+	<link rel="stylesheet" href="/layui/css/layui.css" media="all">
+	<link rel="stylesheet" href="/fonts/font-awesome-4.7.0/css/font-awesome.min.css" />
+	<!--功能按钮样式-->
+	<link rel="stylesheet" href="/css/app.css" media="all">
+	<!--默认样式-->
+	<link rel="stylesheet" href="/css/styles2.css" />
+	<!--默认皮肤-->
+	<link rel="stylesheet" href="/css/themes/blue.1.css" media="all" id="skin" kit-skin />
+	<!--公共样式-->
+	<link rel="stylesheet" href="/css/common.css" />
+	<link rel="shortcut icon" href="/images/favicon.ico">
+	<!--访问统计 百度-->
+	<script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?1123c6760cbd8bd962766d0f2d3f2cf4";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+	</script>
+</head>
+<body class="kit-theme">
+<div class="layui-layout layui-layout-admin kit-layout-admin" id="page-wrapper" v-cloak>
+	<div class="layui-header">
+		<div class="layui-logo"><a href="/">高铁检修管理平台</a></div>
+		<div class="layui-logo kit-logo-mobile">K</div>
+		<!--<form class="layui-form layui-layout-left search-menu">-->
+		<!--<select lay-search="" lay-filter="component" id="search-menu">-->
+		<!--<option value="">便捷菜单查询</option>-->
+		<!--<option value="item.name" v-for="(item, index) in menuList">-->
+		<!--{{ item.name }}-->
+		<!--</option>-->
+		<!--</select>-->
+		<!--</form>-->
+		<ul class="layui-nav layui-layout-left kit-nav">
+			<li class="layui-nav-item layui-action" data-type="jurisdiction">
+				<a href="javascript:;">首页</a>
+			</li>
+			<li class="layui-nav-item layui-action" data-type="tonpl" id="tonpl">
+				<a href="javascript:;">后台</a>
+			</li>
+		</ul>
+		<ul class="layui-nav layui-layout-right kit-nav" id="right-menu">
+			<!--服务器时间-->
+			<li class="layui-nav-item">
+				<div class="digital-clock">{{ serverDate }}</div>
+			</li>
+			<!--天气展示-->
+			<!-- <li class="layui-nav-item">
+                <iframe width="180" scrolling="no" height="18" frameborder="0" allowtransparency="true" src="http://i.tianqi.com/index.php?c=code&id=1&icon=1&wind=1&num=2&site=12"></iframe>
+            </li> -->
+			<li class="layui-nav-item hide" id="tag">
+				<a href="javascript:;"><i class="fa fa-tag" aria-hidden="true"></i></a>
+			</li>
+			<!--<li class="layui-nav-item" id="color">-->
+			<!--<a href="javascript:;">皮肤<span class="layui-badge-dot"></span></a>-->
+			<!--</li>-->
+			<li class="layui-nav-item">
+				<a href="javascript:;">
+					<img src="/images/admin.jpg" class="layui-nav-img">欢迎, {{ cookie.get('username') }}
+				</a>
+				<dl class="layui-nav-child">
+					<dd class="layui-action" data-type="baseinfo">
+						<a href="javascript:;">基本资料</a>
+					</dd>
+					<dd class="layui-action" data-type="resetpassword">
+						<a href="javascript:;">修改密码</a>
+					</dd>
+					<dd class="layui-action" data-type="loginout">
+						<a href="javascript:;">退出</a>
+					</dd>
+				</dl>
+			</li>
+			<!--<li class="layui-nav-item" id="news">-->
+			<!--<a href="javascript:;">消息<span class="layui-badge-dot"></span></a>-->
+			<!--</li>-->
+			<!--<li class="layui-nav-item">-->
+			<!--<a href="javascript:;" id="copyright" style="color:#333;"><i class="fa fa-ellipsis-v" aria-hidden="true"></i></a>-->
+			<!--</li>-->
+		</ul>
+	</div>
+	<!--<div class="layui-side layui-bg-black kit-side">-->
+	<!--<div class="layui-side-scroll">-->
+	<!--<div class="kit-side-fold">-->
+	<!--<i class="fa fa-navicon" aria-hidden="true"></i>-->
+	<!--</div>-->
+	<!--&lt;!&ndash;菜单列表&ndash;&gt;-->
+	<!--<ul class="layui-nav layui-nav-tree" lay-filter="kitNavbar" kit-navbar></ul>-->
+	<!--</div>-->
+	<!--</div>-->
+
+	 侧边导航:
+	<div class="layui-side layui-bg-black kit-side">
+		<ul class="layui-nav layui-nav-tree " lay-filter="test">
+			<!--  <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
+			<li class="layui-nav-item"><a href="/child/dashboard.html">系统总览</a></li>
+			<li class="layui-nav-item"><a href="/real_progress.html">实时进度</a></li>
+			<li class="layui-nav-item"><a href="/child/train_info.html">列车信息</a></li>
+			<li class="layui-nav-item">
+				<a href="javascript:;">检修管理</a>
+				<dl class="layui-nav-child">
+					<dd><a href="/child/maintain/maintain_item.html">检修项目</a></dd>
+					<dd><a href="/child/maintain/maintain_tool.html">检修工具</a></dd>
+					<dd><a href="child/maintain/dispatch.html">检修调度</a></dd>
+				</dl>
+			</li>
+			<li class="layui-nav-item"><a href="/child/employee.html">人员管理</a></li>
+		</ul>
+	</div>
+
+
+	<!--<div class="layui-side layui-bg-black kit-side">-->
+	<!--<div class="layui-side-scroll">-->
+	<!--<div class="kit-side-fold">-->
+	<!--<i class="fa fa-navicon" aria-hidden="true"></i>-->
+	<!--</div>-->
+	<!--&lt;!&ndash;菜单列表&ndash;&gt;-->
+	<!--<ul class="layui-nav layui-nav-tree" lay-filter="kitNavbar" kit-navbar></ul>-->
+	<!--</div>-->
+	<!--</div>-->
+
+	<!-- 内容主体区域 -->
+	<div class="layui-body" id="container">
+		<div style="padding: 15px;">内容加载中,请稍等...</div>
+	</div>
+	<!-- 底部固定区域 -->
+	<div class="layui-footer">
+		CopyRight © 2017<a href=""> 科技有限公司 </a>all rights rerserved
+
+	</div>
+</div>
+<!--锁屏-->
+<div class="admin-header-lock" id="lock-box" style="display: none;">
+	<div class="admin-header-lock-img"><img src="/images/gaotie.jpg" /></div>
+	<div class="admin-header-lock-name" id="lockUserName">anspray</div>
+	<div class="input_btn">
+		<input type="password" name="lockPwd" class="admin-header-lock-input layui-input" placeholder="请输入密码解锁.." id="lockPwd" />
+		<button class="layui-btn" id="unlock">解锁</button>
+	</div>
+	<p>请输入登陆密码进行解锁 !</p>
+</div>
+<script src="/layui/layui.js"></script>
+<!--前端路由-->
+<script src="/js/build/router.js"></script>
+<!--v2.2.2-->
+<script src="/js/vue.min.js"></script>
+<!--公共函数库-->
+<script src="/js/common.js"></script>
+<!--<script src="https://js.fundebug.cn/fundebug.1.1.0.min.js"
+apikey="52bc85eea4bc6c35cd9265f880502c96c5790ffd0ffbf0baa53f73aaf9e8fc00"></script>-->
+
+<script>
+
+    var vm = new Vue({
+        el: '#page-wrapper',
+        data: {
+            menuList: [],
+            serverDate: "0000-00-00 00:00:00",
+        },
+    });
+
+    layui.config({
+        base: '/js/build/'
+    }).use(['app', 'message', 'tab', 'ajaxmod','form', 'routermod'], function() {
+
+        var app = layui.app,
+            $ = layui.jquery,
+            element = layui.element,
+            layer = layui.layer,
+            tab = layui.tab,
+            form = layui.form,
+            ajaxmod = layui.ajaxmod,
+            routermod = layui.routermod,
+            // 将message设置为全局以便子页面调用
+            message = layui.message;
+
+        //主入口
+        app.set({
+            type: 'iframe',
+            // 设置切换是否刷新
+            isrefresh: true
+        }).init();
+
+        // 获取服务器时间
+        ajaxFun("GET","",function (ajaxobj) {
+            var zDate= ajaxobj.getResponseHeader("Date") + (3600000 * 8);
+            var timeStamp = new Date(zDate).getTime();
+            setInterval(function() {
+                timeStamp = timeStamp + 500;
+                var date = new Date(timeStamp);
+                Y = date.getFullYear() + '-';
+                M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+                D = (date.getDate()+1 < 10 ? '0'+(date.getDate()+1) : date.getMonth()+1) + ' ';
+                h = date.getHours() + ':';
+                m = date.getMinutes() + ':';
+                s = date.getSeconds();
+                vm.serverDate = Y+M+D+h+m+s;
+                // var times = new Date(parseInt(timeStamp) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');
+            }, 500);
+        })
+
+        active = {
+            changePage(data) {
+                var data = data == undefined ? {
+                    icon: "",
+                    id: "system_view",
+                    title: "系统总览",
+                    url: "/dashboard.html"
+                } : data;
+                //  $(".layui-tab-title").children("li[lay-id]").each(function() {
+                // 	  var e = $(this).attr("lay-id"); -
+                // 	  1 != e && element.tabDelete('kitTab', e);
+                //  })
+                layer.load(2, {
+                    shade: [0.2, "black"]
+                });
+                setTimeout(function() {
+                    layer.closeAll('loading');
+                    tab.tabAdd(data);
+                }, 1000);
+            },
+            // 修改密码
+            resetpassword() {
+                var data = {
+                    icon: "",
+                    id: "1tab1",
+                    title: "修改密码",
+                    url: "module/other/resetpassword.html"
+                };
+                active.changePage(data);
+            },
+            // 权限管理
+            jurisdiction() {
+                active.changePage();
+            },
+            // 退出
+            loginout() {
+                cookie.clear();
+                window.location.href = "/login"
+            }
+        };
+
+        // 按钮事件
+        $('#page-wrapper .layui-action').on('click', function() {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        var searchArr = [];
+
+        // 验证登录
+        if (!cookie.has('usertoken')) {
+            layer.msg("登录验证失效，即将跳转到登录页面", {
+                icon: 2,
+                shade: [0.8, '#393D49']
+            });
+            window.location.href = "/login"
+        } else {
+
+            ajaxmod.layuiGet("/mainPage/menuList", "", function(res) {
+                var str = `<option value="">便捷菜单查询</option>`;
+                res.data.forEach(function (e) {
+                    e.children.forEach(function (i) {
+                        var strarr = i.url.split("/");
+                        var anchor = strarr[strarr.length-1].split(".")[0];
+                        routermod.add(anchor, (function (i) {
+                            return function () {
+                                var data = {
+                                    icon: i.icon,
+                                    id: i.id,
+                                    title: i.title,
+                                    url: i.url
+                                };
+                                active.changePage(data);
+                            }
+
+                        }(i)))
+
+//                        searchArr.push(i);
+                        str+=`<option value=${i.id}>${i.title}</option>`;
+                    })
+                })
+                form.render();
+                if (res.code != "0") {
+                    layer.msg(res.message, {
+                        icon: 2
+                    });
+                    window.location.href = "/login.html"
+                }
+            },1)
+        }
+
+        // 便捷查询
+//        form.on('select(select-search)', function(data){
+//            searchArr.forEach(function (e) {
+//                if (e.id == data.value) {
+//                    active.changePage(e);
+//                }
+//            })
+//        });
+    });
+
+    // token失效跳转
+    function tologins() {
+        window.location.href = "/login.html"
+    }
+</script>
+</body>
+</html>
